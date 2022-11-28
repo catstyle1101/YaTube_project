@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Об авторе проекта{% endblock title %}
+{% block content %}
+  <div class="container pt-3">
+    <article class="col-12 col-md-9">
+      <h1>Привет, я Антон Масюк!</h1>
+      <p>
+        Я учусь на яндекс практикуме на факультете Бэкенд разработка, кота у меня нет, поэтому помогать с проектом мне было не кому.
+      </p>
+        <a href="https://github.com/catstyle1101">GitHub Автора</a>
+      <p>
+        <img src="{% static '/img/cat.jpg' %}" alt="Котик" height=150 width=100 />
+      </p>
+    </article>
+  </div>
+{% endblock content %} 
