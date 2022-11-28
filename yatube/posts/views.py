@@ -23,6 +23,12 @@ class GroupPostsView(ListView):
     model = Group
     template_name = 'posts/group_list.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        group = get_object_or_404(Group, slug=self.kwargs['slug'])
+        context['group'] = group
+        return context
+
     def get_queryset(self):
         group = get_object_or_404(Group, slug=self.kwargs['slug'])
         return group.posts.all()

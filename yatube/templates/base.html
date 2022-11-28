@@ -20,8 +20,8 @@
   <body>   
     <header>
       {% include "includes/header.html" %}
+      {% block header %}{% endblock header %}
     </header>
-    {% block header %}{% endblock header %}
     <main class="pt-5">
       {% block content %}
         Контент не подвезли :(
