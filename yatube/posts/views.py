@@ -70,7 +70,11 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         new_post = form.save(commit=False)
         new_post.author = self.request.user
         new_post.save()
-        return redirect(reverse('posts:profile', args=(new_post.author.username,)))
+        return redirect(
+            reverse('posts:profile',
+                    args=(new_post.author.username,)
+                    )
+        )
 
 
 class PostEditView(LoginRequiredMixin, UpdateView):
@@ -146,7 +150,12 @@ class UnFollowAuthor(LoginRequiredMixin, View):
 
     def get(self, *args, **kwargs):
         author = get_object_or_404(User, username=self.kwargs['username'])
-        is_follower = Follow.objects.filter(user=self.request.user, author=author)
+        is_follower = Follow.objects.filter(
+            user=self.request.user,
+            author=author,
+        )
         if is_follower.exists():
             is_follower.delete()
-        return redirect(reverse('posts:profile', args=(self.kwargs['username'],)))
+        return redirect(
+            reverse('posts:profile', args=(self.kwargs['username'],))
+        )

@@ -26,6 +26,7 @@ urlpatterns = [
          name='profile_follow'),
     path('profile/<str:username>/unfollow/', views.UnFollowAuthor.as_view(),
          name='profile_unfollow'),
-    path('', cache_page(settings.CACHE_PAGE_SECONDS, key_prefix='index_page')(views.Index.as_view()),
+    path('', cache_page(settings.CACHE_PAGE_SECONDS,
+                        key_prefix='index_page')(views.Index.as_view()),
          name='index_page'),
 ]

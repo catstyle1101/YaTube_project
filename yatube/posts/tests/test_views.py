@@ -9,7 +9,7 @@ from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 from django import forms
 
-from posts.models import Comment, Follow, Group, Post
+from posts.models import Follow, Group, Post
 
 User = get_user_model()
 
@@ -320,11 +320,12 @@ class CommentTest(BaseTest):
         form_data = {
             'text': 'Тестовый',
         }
-        response = self.unauthorised_client.post(
+        self.unauthorised_client.post(
             reverse('posts:add_comment', args=(self.post.id,)),
             data=form_data,
         )
         self.assertEqual(count_comments, self.post.comments.count())
+
 
 class TestCachePage(BaseTest):
     def setUp(self):
