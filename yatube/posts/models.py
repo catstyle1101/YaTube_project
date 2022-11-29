@@ -36,7 +36,7 @@ class Post(CreatedModel):
         blank=True,
         null=True,
         related_name='posts',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         verbose_name='Группа',
         help_text='Группа поста',
     )
@@ -71,6 +71,12 @@ class Comment(CreatedModel):
         verbose_name='Коментарии к посту',
         help_text='Введите коментарий',
     )
+
+    class Meta:
+        ordering = ('-pub_date',)
+
+    def __str__(self):
+        return self.text
 
 
 class Follow(models.Model):
