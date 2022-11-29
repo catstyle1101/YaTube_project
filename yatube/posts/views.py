@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView
 from django.views.generic.base import View
 from django.views.generic.detail import DetailView
@@ -76,10 +76,12 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         new_post = form.save(commit=False)
         new_post.author = self.request.user
         new_post.save()
-        return redirect(
-            reverse('posts:profile',
-                    args=(new_post.author.username,)
-                    )
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'posts:profile',
+            args=(self.request.user.username,)
         )
 
 
@@ -87,8 +89,6 @@ class PostEditView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'posts/create_post.html'
-    slug_field = 'post_id'
-    template_name_suffix = '_update_form'
 
     def get_context_data(self):
         context = super().get_context_data()
@@ -100,9 +100,8 @@ class PostEditView(LoginRequiredMixin, UpdateView):
         queryset = queryset.filter(author=self.request.user)
         return queryset
 
-    def form_valid(self, form):
-        form.save()
-        return redirect(reverse('posts:post_detail', args=(self.object.pk,)))
+    def get_success_url(self):
+        return reverse_lazy('posts:post_detail', args=(self.object.pk,))
 
 
 class AddCommentView(LoginRequiredMixin, CreateView):
