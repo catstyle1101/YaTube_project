@@ -17,20 +17,29 @@ class Index(ListView):
     model = Post
     template_name = 'posts/index.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['index'] = True
+        context['cache_seconds'] = settings.CACHE_PAGE_SECONDS
+        return context
+
 
 class GroupPostsView(ListView):
     paginate_by = settings.COUNT_OF_POSTS_PAGINATOR
-    model = Group
+    model = Post
     template_name = 'posts/group_list.html'
+
+    def get_group_instance(self):
+        return get_object_or_404(Group, slug=self.kwargs.get('slug'))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        group = get_object_or_404(Group, slug=self.kwargs['slug'])
+        group = self.get_group_instance()
         context['group'] = group
         return context
 
     def get_queryset(self):
-        group = get_object_or_404(Group, slug=self.kwargs['slug'])
+        group = self.get_group_instance()
         return group.posts.all()
 
 
@@ -40,17 +49,21 @@ class ProfileView(ListView):
     template_name = 'posts/profile.html'
 
     def get_queryset(self):
-        author = get_object_or_404(User, username=self.kwargs['username'])
+        author = get_object_or_404(User, username=self.kwargs.get('username'))
         return author.posts.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        author = get_object_or_404(User, username=self.kwargs['username'])
+        author = get_object_or_404(User, username=self.kwargs.get('username'))
         context['author'] = author
-        if self.request.user.is_authenticated:
-            context['following'] = author.following.filter(
-                user=self.request.user).exists()
-            context['author_is_not_user'] = author != self.request.user
+        context['following'] = (
+            self.request.user.is_authenticated
+            and author.following.filter(user=self.request.user).exists()
+        )
+        context['author_is_not_user'] = (
+            self.request.user.is_authenticated
+            and author != self.request.user
+        )
         return context
 
 
@@ -95,10 +108,13 @@ class PostEditView(LoginRequiredMixin, UpdateView):
         context['is_edit'] = True
         return context
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.filter(author=self.request.user)
-        return queryset
+    def dispatch(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.author != self.request.user:
+            return redirect(
+                reverse_lazy('posts:post_detail', args=(instance.pk,))
+            )
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy('posts:post_detail', args=(self.object.pk,))
@@ -109,7 +125,7 @@ class AddCommentView(LoginRequiredMixin, CreateView):
     form_class = CommentForm
 
     def form_valid(self, form):
-        post = get_object_or_404(Post, pk=self.kwargs['pk'])
+        post = get_object_or_404(Post, pk=self.kwargs.get('pk'))
         new_comment = form.save(commit=False)
         new_comment.post = post
         new_comment.author = self.request.user
@@ -125,6 +141,7 @@ class FollowingListView(LoginRequiredMixin, ListView):
     def get_context_data(self):
         context = super().get_context_data()
         context['following_view'] = True
+        context['cache_seconds'] = 0
         return context
 
     def get_queryset(self):
@@ -136,16 +153,12 @@ class FollowAuthor(LoginRequiredMixin, View):
     template_name = 'posts/profile.html'
 
     def get(self, *args, **kwargs):
-        author = get_object_or_404(User, username=self.kwargs['username'])
-        is_follower = Follow.objects.filter(
-            user=self.request.user,
-            author=author
-        )
-        if self.request.user != author and not is_follower.exists():
-            Follow.objects.create(author=author, user=self.request.user)
+        author = get_object_or_404(User, username=self.kwargs.get('username'))
+        if author != self.request.user:
+            Follow.objects.get_or_create(author=author, user=self.request.user)
         return redirect(reverse(
             'posts:profile',
-            args=(self.kwargs['username'],)
+            args=(self.kwargs.get('username'),)
         ))
 
 
@@ -154,13 +167,12 @@ class UnFollowAuthor(LoginRequiredMixin, View):
     template_name = 'posts/profile.html'
 
     def get(self, *args, **kwargs):
-        author = get_object_or_404(User, username=self.kwargs['username'])
+        author = get_object_or_404(User, username=self.kwargs.get('username'))
         is_follower = Follow.objects.filter(
             user=self.request.user,
             author=author,
         )
-        if is_follower.exists():
-            is_follower.delete()
+        is_follower.delete()
         return redirect(
-            reverse('posts:profile', args=(self.kwargs['username'],))
+            reverse('posts:profile', args=(self.kwargs.get('username'),))
         )

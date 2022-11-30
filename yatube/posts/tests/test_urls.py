@@ -40,17 +40,18 @@ class PostURLTests(TestCase):
             'posts/profile.html': '/profile/auth/',
         }
         for template, address in templates_url_names.items():
-            response = self.guest_client.get(address)
-            self.assertTemplateUsed(
-                response,
-                template,
-                f'template {template} not using on address {address}'
-            )
-            self.assertEqual(
-                response.status_code,
-                HTTPStatus.OK,
-                f'test url {address} failed'
-            )
+            with self.subTest():
+                response = self.guest_client.get(address)
+                self.assertTemplateUsed(
+                    response,
+                    template,
+                    f'template {template} not using on address {address}'
+                )
+                self.assertEqual(
+                    response.status_code,
+                    HTTPStatus.OK,
+                    f'test url {address} failed'
+                )
 
     def test_unexisting_page_returns_404(self):
         """Проверка, что не существующая страница выдает ошибку 404."""
@@ -86,7 +87,7 @@ class PostURLTests(TestCase):
         чужой Post."""
         url = '/posts/1/edit/'
         response = self.second_authorised_client.get(url)
-        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def test_edit_post_unathorised(self):
         """Проверка, что неавторизованный пользователь не может редактировать
@@ -94,4 +95,32 @@ class PostURLTests(TestCase):
         url = '/posts/1/edit/'
         response = self.guest_client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, '/auth/login/?next=/posts/1/edit/')
+        self.assertRedirects(response, '/posts/1/')
+
+    def test_follow_page_unavailable_by_not_authorised_user(self):
+        """Проверка, что страницы подписки
+        недоступны не авторизованному пользователю."""
+        urls = [
+            '/profile/auth/follow/',
+            '/profile/auth/unfollow/',
+            '/follow/'
+        ]
+        for url in urls:
+            with self.subTest():
+                response = self.guest_client.get(url)
+                self.assertEqual(response.status_code, HTTPStatus.FOUND)
+                self.assertRedirects(
+                    response, f'/auth/login/?next={url}'
+                )
+
+    def test_follow_page_available_by_authorised_user(self):
+        """Проверка, что страницы подписки
+        доступны авторизованному пользователю."""
+        urls = [
+            '/follow/'
+        ]
+        for url in urls:
+            with self.subTest():
+                response = self.second_authorised_client.get(url)
+                self.assertEqual(response.status_code, HTTPStatus.OK)
+                self.assertTemplateUsed(response, 'posts/index.html')

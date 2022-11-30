@@ -68,8 +68,8 @@ class Comment(CreatedModel):
         related_name='comments',
     )
     text = models.TextField(
-        verbose_name='Коментарии к посту',
-        help_text='Введите коментарий',
+        verbose_name='Комментарии к посту',
+        help_text='Введите комментарий',
     )
 
     class Meta:

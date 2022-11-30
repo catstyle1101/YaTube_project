@@ -9,20 +9,23 @@
 {% block content %}
   <div class="container py-5">
     {% include 'posts/includes/switcher.html' %}
-    {% for post in page_obj %}
-      {% if post.group %}
-        {% include "includes/post.html" with link_to_group=post.group.slug is_detail=True %}
-      {% else %}
-        {% include "includes/post.html" with is_detail=True %}
-      {% endif %}
-      {% include "posts/includes/paginator.html" %}
-      {% empty %}
-      {% if following_view %}
-        Пока у вас нет никаких подписок, чтобы тут появились посты - подпишитесь на авторов.
-      {% else %}
-        Никто еще ничего не запостил на сайт. Будьте первым!
-      {% endif %}
-    {% endfor %}
+    {% load cache %}
+    {% cache cache_seconds index %}
+      {% for post in page_obj %}
+        {% if post.group %}
+          {% include "includes/post.html" with link_to_group=post.group.slug is_detail=True %}
+        {% else %}
+          {% include "includes/post.html" with is_detail=True %}
+        {% endif %}
+        {% empty %}
+        {% if following_view %}
+          Пока у вас нет никаких подписок, чтобы тут появились посты - подпишитесь на авторов.
+        {% else %}
+          Никто еще ничего не запостил на сайт. Будьте первым!
+        {% endif %}
+      {% endfor %}
+    {% endcache %}
+    {% include "posts/includes/paginator.html" %}
   </div>
 {% endblock content %}
     

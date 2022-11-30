@@ -1,3 +1,4 @@
+from http import HTTPStatus
 import tempfile
 import shutil
 
@@ -80,6 +81,7 @@ class PostPagesTests(BaseTest):
             reverse('posts:post_create'): 'posts/create_post.html',
             reverse('posts:post_edit',
                     args=(1,)): 'posts/create_post.html',
+            reverse('posts:follow_index'): 'posts/index.html',
         }
         for reverse_name, template in templates_pages_names.items():
             with self.subTest(reverse_name=reverse_name):
@@ -309,7 +311,7 @@ class CommentTest(BaseTest):
             data=form_data,
         )
         self.assertEqual(count_comments + 1, self.post.comments.count())
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(
             response,
             reverse('posts:post_detail', args=(self.post.id,)),
@@ -334,20 +336,19 @@ class TestCachePage(BaseTest):
         cache.clear()
 
     def test_index_page_uses_cache(self):
-        form_data = {
-            'text': 'Тестовый пост',
-        }
-        response = self.authorised_user.post(
-            reverse('posts:post_create'),
-            data=form_data,
+        first_response = self.authorised_user.get(reverse('posts:index_page'))
+        first_content = first_response.content
+        Post.objects.create(
+            text='Тестовый пост',
+            author=self.user,
         )
-        self.assertIsNone(response.context)
+        second_response = self.authorised_user.get(reverse('posts:index_page'))
+        second_content = second_response.content
+        self.assertEqual(first_content, second_content)
         cache.clear()
-        index_page = self.authorised_user.get(reverse('posts:index_page'))
-        post = index_page.context[0]['post_list'][0]
-        self.assertEqual(post.text, form_data['text'])
-        self.assertEqual(post.group, None)
-        self.assertEqual(post.author, self.user)
+        third_response = self.authorised_user.get(reverse('posts:index_page'))
+        third_content = third_response.content
+        self.assertNotEqual(first_content, third_content)
 
 
 class TestSubscribers(TestCase):
@@ -377,7 +378,7 @@ class TestSubscribers(TestCase):
             reverse('posts:profile_follow', args=(self.author.username,)),
             follow=True,
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTrue(
             Follow.objects.filter(
                 user=self.first_user,
@@ -395,7 +396,7 @@ class TestSubscribers(TestCase):
             reverse('posts:profile_unfollow', args=(self.author.username,)),
             follow=True,
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertFalse(
             Follow.objects.filter(
                 user=self.first_user,
@@ -413,7 +414,7 @@ class TestSubscribers(TestCase):
         response = self.first_test_user.get(
             reverse('posts:follow_index'),
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         posts = response.context.get('page_obj')
         self.assertIn(
             self.post,

@@ -80,11 +80,9 @@ class PostFormTests(TestCase):
         form_data = {
             'group': self.group.pk,
             'text': 'Тестовая запись',
-        }
-        image_data = {
             'image': uploaded,
         }
-        self.assertTrue(PostForm(data=form_data, files=image_data).is_valid())
+        self.assertTrue(PostForm(data=form_data).is_valid())
         response = self.authorised_client.post(
             reverse('posts:post_create'),
             data=form_data,
@@ -103,9 +101,12 @@ class PostFormTests(TestCase):
                 text='Тестовая запись',
                 group=self.group,
                 author=self.user,
+                image=f'posts/{uploaded}',
             ).exists()
         )
-        self.assertEqual(Post.objects.all()[1].image.read(), small_gif)
+        self.assertEqual(
+            Post.objects.all().latest('pub_date').image.read(), small_gif
+        )
 
     def test_edit_post(self):
         """Валидная форма изменяет запись в Post."""
@@ -145,9 +146,8 @@ class PostFormTests(TestCase):
         response = self.another_authorised_client.post(
             reverse('posts:post_edit', args=(self.post.pk,)),
             data=form_data,
-            follow=True,
         )
-        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertTrue(
             Post.objects.filter(
                 pk=self.post.pk,
@@ -171,7 +171,7 @@ class PostFormTests(TestCase):
             data=form_data,
             follow=True,
         )
-        self.assertRedirects(response, '/auth/login/?next=/posts/1/edit/')
+        self.assertRedirects(response, '/posts/1/')
         self.assertTrue(
             Post.objects.filter(
                 text='Тестовый текст',
@@ -261,7 +261,6 @@ class CommentFormTests(TestCase):
                 args=(self.post.id,)
             ),
         )
-        self.assertTrue(self.post.comments.first().text, form_data['text'])
         self.assertTrue(
             Comment.objects.filter(
                 text=form_data['text'],
