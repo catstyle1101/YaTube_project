@@ -23,24 +23,32 @@ class Index(ListView):
         context['cache_seconds'] = settings.CACHE_PAGE_SECONDS
         return context
 
+    def get_queryset(self):
+        return (Post.objects.select_related('group').all()
+                .select_related('author').all()
+                )
+
 
 class GroupPostsView(ListView):
     paginate_by = settings.COUNT_OF_POSTS_PAGINATOR
     model = Post
     template_name = 'posts/group_list.html'
+    group = None
 
     def get_group_instance(self):
         return get_object_or_404(Group, slug=self.kwargs.get('slug'))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        group = self.get_group_instance()
-        context['group'] = group
+        self.group = self.get_group_instance()
+        context['group'] = self.group
         return context
 
     def get_queryset(self):
-        group = self.get_group_instance()
-        return group.posts.all()
+        return (Post.objects.select_related('group')
+                .filter(group=self.group)
+                .select_related('author').all()
+                )
 
 
 class ProfileView(ListView):
@@ -49,8 +57,10 @@ class ProfileView(ListView):
     template_name = 'posts/profile.html'
 
     def get_queryset(self):
-        author = get_object_or_404(User, username=self.kwargs.get('username'))
-        return author.posts.all()
+        return (Post.objects.select_related('author')
+                .filter(author__username=self.kwargs.get('username'))
+                .select_related('group').all()
+                )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -79,6 +89,10 @@ class PostDetailView(DetailView, FormMixin):
         context['comments'] = comments
         return context
 
+    def get_queryset(self):
+        return (Post.objects.select_related('author').all()
+                .select_related('group').all())
+
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
@@ -102,11 +116,16 @@ class PostEditView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'posts/create_post.html'
+    object = None
 
     def get_context_data(self):
         context = super().get_context_data()
         context['is_edit'] = True
         return context
+
+    def get_queryset(self):
+        return (Post.objects.select_related('group').all()
+                .select_related('author').all())
 
     def dispatch(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -141,7 +160,7 @@ class FollowingListView(LoginRequiredMixin, ListView):
     def get_context_data(self):
         context = super().get_context_data()
         context['following_view'] = True
-        context['cache_seconds'] = 0
+        context['cache_seconds'] = settings.CACHE_PAGE_SECONDS
         return context
 
     def get_queryset(self):

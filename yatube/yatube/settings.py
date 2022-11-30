@@ -34,7 +34,9 @@ ALLOWED_HOSTS = [
     'testserver',
 ]
 
-
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,9 +51,11 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'about.apps.AboutConfig',
     'sorl.thumbnail',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
