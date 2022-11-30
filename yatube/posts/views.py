@@ -33,20 +33,19 @@ class GroupPostsView(ListView):
     paginate_by = settings.COUNT_OF_POSTS_PAGINATOR
     model = Post
     template_name = 'posts/group_list.html'
-    group = None
 
     def get_group_instance(self):
         return get_object_or_404(Group, slug=self.kwargs.get('slug'))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        self.group = self.get_group_instance()
-        context['group'] = self.group
+        group = self.get_group_instance()
+        context['group'] = group
         return context
 
     def get_queryset(self):
         return (Post.objects.select_related('group')
-                .filter(group=self.group)
+                .filter(group__slug=self.kwargs.get('slug'))
                 .select_related('author').all()
                 )
 
