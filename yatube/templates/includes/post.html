@@ -23,7 +23,7 @@
       href="{% url 'posts:group_list' post.group.slug %}">{{ post.group.slug }}</a>
     {% endif %}
   </p>
-  {% if not forloop.last %}
-    <hr/>
-  {% endif %}
 </article>
+{% if not forloop.last %}
+  <hr/>
+{% endif %}

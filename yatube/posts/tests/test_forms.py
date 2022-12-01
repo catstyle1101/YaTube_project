@@ -104,9 +104,6 @@ class PostFormTests(TestCase):
                 image=f'posts/{uploaded}',
             ).exists()
         )
-        self.assertEqual(
-            Post.objects.all().latest('pub_date').image.read(), small_gif
-        )
 
     def test_edit_post(self):
         """Валидная форма изменяет запись в Post."""

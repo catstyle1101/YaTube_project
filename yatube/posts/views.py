@@ -24,9 +24,7 @@ class Index(ListView):
         return context
 
     def get_queryset(self):
-        return (Post.objects.select_related('group').all()
-                .select_related('author').all()
-                )
+        return Post.objects.select_related('author', 'group')
 
 
 class GroupPostsView(ListView):
@@ -44,10 +42,8 @@ class GroupPostsView(ListView):
         return context
 
     def get_queryset(self):
-        return (Post.objects.select_related('group')
-                .filter(group__slug=self.kwargs.get('slug'))
-                .select_related('author').all()
-                )
+        return (Post.objects.select_related('author')
+                .filter(group__slug=self.kwargs.get('slug')))
 
 
 class ProfileView(ListView):
@@ -56,10 +52,8 @@ class ProfileView(ListView):
     template_name = 'posts/profile.html'
 
     def get_queryset(self):
-        return (Post.objects.select_related('author')
-                .filter(author__username=self.kwargs.get('username'))
-                .select_related('group').all()
-                )
+        return (Post.objects.select_related('group')
+                .filter(author__username=self.kwargs.get('username')))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -68,10 +62,6 @@ class ProfileView(ListView):
         context['following'] = (
             self.request.user.is_authenticated
             and author.following.filter(user=self.request.user).exists()
-        )
-        context['author_is_not_user'] = (
-            self.request.user.is_authenticated
-            and author != self.request.user
         )
         return context
 

@@ -10,7 +10,7 @@
   <div class="container py-5">
     {% include 'posts/includes/switcher.html' %}
     {% load cache %}
-    {% cache cache_seconds index %}
+    {% cache cache_seconds page_obj request %}
       {% for post in page_obj %}
         {% if post.group %}
           {% include "includes/post.html" with link_to_group=post.group.slug is_detail=True %}
@@ -18,11 +18,11 @@
           {% include "includes/post.html" with is_detail=True %}
         {% endif %}
         {% empty %}
-        {% if following_view %}
-          Пока у вас нет никаких подписок, чтобы тут появились посты - подпишитесь на авторов.
-        {% else %}
-          Никто еще ничего не запостил на сайт. Будьте первым!
-        {% endif %}
+          {% if following_view %}
+            Пока у вас нет никаких подписок, чтобы тут появились посты - подпишитесь на авторов.
+          {% else %}
+            Никто еще ничего не запостил на сайт. Будьте первым!
+          {% endif %}
       {% endfor %}
     {% endcache %}
     {% include "posts/includes/paginator.html" %}
