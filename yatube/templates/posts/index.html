@@ -10,7 +10,7 @@
   <div class="container py-5">
     {% include 'posts/includes/switcher.html' %}
     {% load cache %}
-    {% cache cache_seconds page_obj request %}
+    {% cache cache_seconds page_obj.number request %}
       {% for post in page_obj %}
         {% if post.group %}
           {% include "includes/post.html" with link_to_group=post.group.slug is_detail=True %}
