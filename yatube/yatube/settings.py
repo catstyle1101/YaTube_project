@@ -32,6 +32,8 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     '[::1]',
     'testserver',
+    'www.catstyle1101.pythonanywhere.com',
+    'catstyle1101.pythonanywhere.com',
 ]
 
 # Application definition

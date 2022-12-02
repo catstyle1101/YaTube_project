@@ -1,27 +1,48 @@
 {% extends "base.html" %}
-{% block title %}{{ author.get_full_name }} профайл пользователя{% endblock title %}
+{% block title %}{{ author.get_full_name }} профайл
+  пользователя{% endblock title %}
 {% block content %}
   <div class="container py-5">
-    <div class="mb-5">
-      <h1>Все посты пользователя {{ author.get_full_name }}</h1>
-      <h3>Всего постов: {{ author.posts.count }}</h3>
-      {% if author != user and user.is_authenticated %}
-        {% if following %}
-          <a
-            class="btn btn-lg btn-light"
-            href="{% url 'posts:profile_unfollow' author.username %}" role="button"
-          >
-            Отписаться
-          </a>
-        {% else %}
-          <a
-            class="btn btn-lg btn-primary"
-            href="{% url 'posts:profile_follow' author.username %}" role="button"
-          >
-            Подписаться
-          </a>
-        {% endif %}
-      {% endif %}
+      <aside class="col-12 col-md-3">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Все посты пользователя <b>{{ author.get_full_name }}</b><br>
+          </li>
+          <li class="list-group-item">
+            Имя пользователя: <b>{{ author.username }}</b>
+          </li>
+          <li class="list-group-item">
+            Всего постов: <b>{{ author.posts.count }}</b>
+          </li>
+          <li class="list-group-item">
+            Подписок на автора: <b>{{ author.following.count }}</b>
+          </li>
+          <li class="list-group-item">
+            Подписан: <b>{{ author.follower.count }}</b>
+          </li>
+          {% if author != user and user.is_authenticated %}
+            <li class="list-group-item">
+              {% if following %}
+                <a
+                  class="btn btn-lg btn-light"
+                  href="{% url 'posts:profile_unfollow' author.username %}"
+                  role="button"
+                >
+                  Отписаться
+                </a>
+              {% else %}
+                <a
+                  class="btn btn-lg btn-primary"
+                  href="{% url 'posts:profile_follow' author.username %}"
+                  role="button"
+                >
+                  Подписаться
+                </a>
+                </li>
+              {% endif %}
+            </ul>
+          {% endif %}
+      </aside>
       {% for post in page_obj %}
         {% if post.group %}
           {% include "includes/post.html" with link_to_group=post.group.slug %}
@@ -31,5 +52,4 @@
       {% endfor %}
       {% include "posts/includes/paginator.html" %}
     </div>
-  </div>
 {% endblock content %}
