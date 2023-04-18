@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,8 +25,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 SECRET_KEY = '2%_k5wb8iejm5bn(3hd6n_gdpu1)mf077m8c@z%w0bb0k^5=_9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -34,6 +35,7 @@ ALLOWED_HOSTS = [
     'testserver',
     'www.catstyle1101.pythonanywhere.com',
     'catstyle1101.pythonanywhere.com',
+    '62.84.118.152',
 ]
 
 # Application definition
