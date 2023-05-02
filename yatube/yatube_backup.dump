@@ -1,0 +1,1382 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.7 (Ubuntu 14.7-0ubuntu0.22.04.1)
+-- Dumped by pg_dump version 14.7 (Ubuntu 14.7-0ubuntu0.22.04.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: yatube_user
+--
+
+CREATE TABLE public.auth_group (
+    id integer NOT NULL,
+    name character varying(150) NOT NULL
+);
+
+
+ALTER TABLE public.auth_group OWNER TO yatube_user;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: yatube_user
+--
+
+CREATE SEQUENCE public.auth_group_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_id_seq OWNER TO yatube_user;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yatube_user
+--
+
+ALTER SEQUENCE public.auth_group_id_seq OWNED BY public.auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: yatube_user
+--
+
+CREATE TABLE public.auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_group_permissions OWNER TO yatube_user;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: yatube_user
+--
+
+CREATE SEQUENCE public.auth_group_permissions_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_permissions_id_seq OWNER TO yatube_user;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yatube_user
+--
+
+ALTER SEQUENCE public.auth_group_permissions_id_seq OWNED BY public.auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: yatube_user
+--
+
+CREATE TABLE public.auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.auth_permission OWNER TO yatube_user;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: yatube_user
+--
+
+CREATE SEQUENCE public.auth_permission_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_permission_id_seq OWNER TO yatube_user;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yatube_user
+--
+
+ALTER SEQUENCE public.auth_permission_id_seq OWNED BY public.auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: yatube_user
+--
+
+CREATE TABLE public.auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    is_superuser boolean NOT NULL,
+    username character varying(150) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(150) NOT NULL,
+    email character varying(254) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.auth_user OWNER TO yatube_user;
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: yatube_user
+--
+
+CREATE TABLE public.auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_groups OWNER TO yatube_user;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: yatube_user
+--
+
+CREATE SEQUENCE public.auth_user_groups_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_groups_id_seq OWNER TO yatube_user;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yatube_user
+--
+
+ALTER SEQUENCE public.auth_user_groups_id_seq OWNED BY public.auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: yatube_user
+--
+
+CREATE SEQUENCE public.auth_user_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_id_seq OWNER TO yatube_user;
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yatube_user
+--
+
+ALTER SEQUENCE public.auth_user_id_seq OWNED BY public.auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: yatube_user
+--
+
+CREATE TABLE public.auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_user_permissions OWNER TO yatube_user;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: yatube_user
+--
+
+CREATE SEQUENCE public.auth_user_user_permissions_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_user_permissions_id_seq OWNER TO yatube_user;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yatube_user
+--
+
+ALTER SEQUENCE public.auth_user_user_permissions_id_seq OWNED BY public.auth_user_user_permissions.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: yatube_user
+--
+
+CREATE TABLE public.django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE public.django_admin_log OWNER TO yatube_user;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: yatube_user
+--
+
+CREATE SEQUENCE public.django_admin_log_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_admin_log_id_seq OWNER TO yatube_user;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yatube_user
+--
+
+ALTER SEQUENCE public.django_admin_log_id_seq OWNED BY public.django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: yatube_user
+--
+
+CREATE TABLE public.django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.django_content_type OWNER TO yatube_user;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: yatube_user
+--
+
+CREATE SEQUENCE public.django_content_type_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_content_type_id_seq OWNER TO yatube_user;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yatube_user
+--
+
+ALTER SEQUENCE public.django_content_type_id_seq OWNED BY public.django_content_type.id;
+
+
+--
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: yatube_user
+--
+
+CREATE TABLE public.django_migrations (
+    id integer NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_migrations OWNER TO yatube_user;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: yatube_user
+--
+
+CREATE SEQUENCE public.django_migrations_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_migrations_id_seq OWNER TO yatube_user;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yatube_user
+--
+
+ALTER SEQUENCE public.django_migrations_id_seq OWNED BY public.django_migrations.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: yatube_user
+--
+
+CREATE TABLE public.django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_session OWNER TO yatube_user;
+
+--
+-- Name: posts_comment; Type: TABLE; Schema: public; Owner: yatube_user
+--
+
+CREATE TABLE public.posts_comment (
+    id integer NOT NULL,
+    text text NOT NULL,
+    author_id integer NOT NULL,
+    post_id integer NOT NULL,
+    pub_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.posts_comment OWNER TO yatube_user;
+
+--
+-- Name: posts_comment_id_seq; Type: SEQUENCE; Schema: public; Owner: yatube_user
+--
+
+CREATE SEQUENCE public.posts_comment_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.posts_comment_id_seq OWNER TO yatube_user;
+
+--
+-- Name: posts_comment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yatube_user
+--
+
+ALTER SEQUENCE public.posts_comment_id_seq OWNED BY public.posts_comment.id;
+
+
+--
+-- Name: posts_follow; Type: TABLE; Schema: public; Owner: yatube_user
+--
+
+CREATE TABLE public.posts_follow (
+    id integer NOT NULL,
+    author_id integer NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public.posts_follow OWNER TO yatube_user;
+
+--
+-- Name: posts_follow_id_seq; Type: SEQUENCE; Schema: public; Owner: yatube_user
+--
+
+CREATE SEQUENCE public.posts_follow_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.posts_follow_id_seq OWNER TO yatube_user;
+
+--
+-- Name: posts_follow_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yatube_user
+--
+
+ALTER SEQUENCE public.posts_follow_id_seq OWNED BY public.posts_follow.id;
+
+
+--
+-- Name: posts_group; Type: TABLE; Schema: public; Owner: yatube_user
+--
+
+CREATE TABLE public.posts_group (
+    id integer NOT NULL,
+    title character varying(200) NOT NULL,
+    slug character varying(50) NOT NULL,
+    description text NOT NULL
+);
+
+
+ALTER TABLE public.posts_group OWNER TO yatube_user;
+
+--
+-- Name: posts_group_id_seq; Type: SEQUENCE; Schema: public; Owner: yatube_user
+--
+
+CREATE SEQUENCE public.posts_group_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.posts_group_id_seq OWNER TO yatube_user;
+
+--
+-- Name: posts_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yatube_user
+--
+
+ALTER SEQUENCE public.posts_group_id_seq OWNED BY public.posts_group.id;
+
+
+--
+-- Name: posts_post; Type: TABLE; Schema: public; Owner: yatube_user
+--
+
+CREATE TABLE public.posts_post (
+    id integer NOT NULL,
+    text text NOT NULL,
+    pub_date timestamp with time zone NOT NULL,
+    author_id integer NOT NULL,
+    group_id integer,
+    image character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.posts_post OWNER TO yatube_user;
+
+--
+-- Name: posts_post_id_seq; Type: SEQUENCE; Schema: public; Owner: yatube_user
+--
+
+CREATE SEQUENCE public.posts_post_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.posts_post_id_seq OWNER TO yatube_user;
+
+--
+-- Name: posts_post_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yatube_user
+--
+
+ALTER SEQUENCE public.posts_post_id_seq OWNED BY public.posts_post.id;
+
+
+--
+-- Name: thumbnail_kvstore; Type: TABLE; Schema: public; Owner: yatube_user
+--
+
+CREATE TABLE public.thumbnail_kvstore (
+    key character varying(200) NOT NULL,
+    value text NOT NULL
+);
+
+
+ALTER TABLE public.thumbnail_kvstore OWNER TO yatube_user;
+
+--
+-- Name: auth_group id; Type: DEFAULT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_group ALTER COLUMN id SET DEFAULT nextval('public.auth_group_id_seq'::regclass);
+
+
+--
+-- Name: auth_group_permissions id; Type: DEFAULT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: auth_permission id; Type: DEFAULT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_permission ALTER COLUMN id SET DEFAULT nextval('public.auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: auth_user id; Type: DEFAULT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_user ALTER COLUMN id SET DEFAULT nextval('public.auth_user_id_seq'::regclass);
+
+
+--
+-- Name: auth_user_groups id; Type: DEFAULT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_user_groups ALTER COLUMN id SET DEFAULT nextval('public.auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: auth_user_user_permissions id; Type: DEFAULT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: django_admin_log id; Type: DEFAULT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.django_admin_log ALTER COLUMN id SET DEFAULT nextval('public.django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: django_content_type id; Type: DEFAULT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.django_content_type ALTER COLUMN id SET DEFAULT nextval('public.django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: django_migrations id; Type: DEFAULT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.django_migrations ALTER COLUMN id SET DEFAULT nextval('public.django_migrations_id_seq'::regclass);
+
+
+--
+-- Name: posts_comment id; Type: DEFAULT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.posts_comment ALTER COLUMN id SET DEFAULT nextval('public.posts_comment_id_seq'::regclass);
+
+
+--
+-- Name: posts_follow id; Type: DEFAULT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.posts_follow ALTER COLUMN id SET DEFAULT nextval('public.posts_follow_id_seq'::regclass);
+
+
+--
+-- Name: posts_group id; Type: DEFAULT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.posts_group ALTER COLUMN id SET DEFAULT nextval('public.posts_group_id_seq'::regclass);
+
+
+--
+-- Name: posts_post id; Type: DEFAULT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.posts_post ALTER COLUMN id SET DEFAULT nextval('public.posts_post_id_seq'::regclass);
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: yatube_user
+--
+
+COPY public.auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: yatube_user
+--
+
+COPY public.auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: yatube_user
+--
+
+COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add log entry	1	add_logentry
+2	Can change log entry	1	change_logentry
+3	Can delete log entry	1	delete_logentry
+4	Can view log entry	1	view_logentry
+5	Can add permission	2	add_permission
+6	Can change permission	2	change_permission
+7	Can delete permission	2	delete_permission
+8	Can view permission	2	view_permission
+9	Can add group	3	add_group
+10	Can change group	3	change_group
+11	Can delete group	3	delete_group
+12	Can view group	3	view_group
+13	Can add user	4	add_user
+14	Can change user	4	change_user
+15	Can delete user	4	delete_user
+16	Can view user	4	view_user
+17	Can add content type	5	add_contenttype
+18	Can change content type	5	change_contenttype
+19	Can delete content type	5	delete_contenttype
+20	Can view content type	5	view_contenttype
+21	Can add session	6	add_session
+22	Can change session	6	change_session
+23	Can delete session	6	delete_session
+24	Can view session	6	view_session
+25	Can add Пост	7	add_post
+26	Can change Пост	7	change_post
+27	Can delete Пост	7	delete_post
+28	Can view Пост	7	view_post
+29	Can add сообщество	8	add_group
+30	Can change сообщество	8	change_group
+31	Can delete сообщество	8	delete_group
+32	Can view сообщество	8	view_group
+33	Can add comment	9	add_comment
+34	Can change comment	9	change_comment
+35	Can delete comment	9	delete_comment
+36	Can view comment	9	view_comment
+37	Can add follow	10	add_follow
+38	Can change follow	10	change_follow
+39	Can delete follow	10	delete_follow
+40	Can view follow	10	view_follow
+41	Can add kv store	11	add_kvstore
+42	Can change kv store	11	change_kvstore
+43	Can delete kv store	11	delete_kvstore
+44	Can view kv store	11	view_kvstore
+\.
+
+
+--
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: yatube_user
+--
+
+COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: yatube_user
+--
+
+COPY public.auth_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: yatube_user
+--
+
+COPY public.auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: yatube_user
+--
+
+COPY public.django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: yatube_user
+--
+
+COPY public.django_content_type (id, app_label, model) FROM stdin;
+1	admin	logentry
+2	auth	permission
+3	auth	group
+4	auth	user
+5	contenttypes	contenttype
+6	sessions	session
+7	posts	post
+8	posts	group
+9	posts	comment
+10	posts	follow
+11	thumbnail	kvstore
+\.
+
+
+--
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: yatube_user
+--
+
+COPY public.django_migrations (id, app, name, applied) FROM stdin;
+1	contenttypes	0001_initial	2023-04-18 12:57:35.762868+00
+2	auth	0001_initial	2023-04-18 12:57:35.843182+00
+3	admin	0001_initial	2023-04-18 12:57:35.986754+00
+4	admin	0002_logentry_remove_auto_add	2023-04-18 12:57:36.021934+00
+5	admin	0003_logentry_add_action_flag_choices	2023-04-18 12:57:36.039919+00
+6	contenttypes	0002_remove_content_type_name	2023-04-18 12:57:36.064063+00
+7	auth	0002_alter_permission_name_max_length	2023-04-18 12:57:36.074161+00
+8	auth	0003_alter_user_email_max_length	2023-04-18 12:57:36.086653+00
+9	auth	0004_alter_user_username_opts	2023-04-18 12:57:36.096613+00
+10	auth	0005_alter_user_last_login_null	2023-04-18 12:57:36.108514+00
+11	auth	0006_require_contenttypes_0002	2023-04-18 12:57:36.11415+00
+12	auth	0007_alter_validators_add_error_messages	2023-04-18 12:57:36.122361+00
+13	auth	0008_alter_user_username_max_length	2023-04-18 12:57:36.144012+00
+14	auth	0009_alter_user_last_name_max_length	2023-04-18 12:57:36.157606+00
+15	auth	0010_alter_group_name_max_length	2023-04-18 12:57:36.172677+00
+16	auth	0011_update_proxy_permissions	2023-04-18 12:57:36.182454+00
+17	posts	0001_initial	2023-04-18 12:57:36.206234+00
+18	posts	0002_auto_20221019_1614	2023-04-18 12:57:36.27411+00
+19	posts	0003_auto_20221019_1649	2023-04-18 12:57:36.311699+00
+20	posts	0004_auto_20221020_1115	2023-04-18 12:57:36.343758+00
+21	posts	0005_auto_20221020_1118	2023-04-18 12:57:36.361168+00
+22	posts	0006_auto_20221125_1623	2023-04-18 12:57:36.397201+00
+23	posts	0007_auto_20221125_1629	2023-04-18 12:57:36.426001+00
+24	posts	0008_auto_20221125_1645	2023-04-18 12:57:36.438252+00
+25	posts	0009_comment	2023-04-18 12:57:36.457116+00
+26	posts	0010_auto_20221127_1348	2023-04-18 12:57:36.48141+00
+27	posts	0011_auto_20221127_2259	2023-04-18 12:57:36.527359+00
+28	posts	0012_auto_20221128_1123	2023-04-18 12:57:36.564953+00
+29	posts	0013_follow	2023-04-18 12:57:36.586107+00
+30	posts	0014_auto_20221130_1037	2023-04-18 12:57:36.622155+00
+31	posts	0015_auto_20230418_0844	2023-04-18 12:57:36.639922+00
+32	sessions	0001_initial	2023-04-18 12:57:36.659086+00
+33	thumbnail	0001_initial	2023-04-18 12:57:36.701783+00
+\.
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: yatube_user
+--
+
+COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
+\.
+
+
+--
+-- Data for Name: posts_comment; Type: TABLE DATA; Schema: public; Owner: yatube_user
+--
+
+COPY public.posts_comment (id, text, author_id, post_id, pub_date) FROM stdin;
+\.
+
+
+--
+-- Data for Name: posts_follow; Type: TABLE DATA; Schema: public; Owner: yatube_user
+--
+
+COPY public.posts_follow (id, author_id, user_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: posts_group; Type: TABLE DATA; Schema: public; Owner: yatube_user
+--
+
+COPY public.posts_group (id, title, slug, description) FROM stdin;
+\.
+
+
+--
+-- Data for Name: posts_post; Type: TABLE DATA; Schema: public; Owner: yatube_user
+--
+
+COPY public.posts_post (id, text, pub_date, author_id, group_id, image) FROM stdin;
+\.
+
+
+--
+-- Data for Name: thumbnail_kvstore; Type: TABLE DATA; Schema: public; Owner: yatube_user
+--
+
+COPY public.thumbnail_kvstore (key, value) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yatube_user
+--
+
+SELECT pg_catalog.setval('public.auth_group_id_seq', 1, false);
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yatube_user
+--
+
+SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yatube_user
+--
+
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 44, true);
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yatube_user
+--
+
+SELECT pg_catalog.setval('public.auth_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yatube_user
+--
+
+SELECT pg_catalog.setval('public.auth_user_id_seq', 1, false);
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yatube_user
+--
+
+SELECT pg_catalog.setval('public.auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yatube_user
+--
+
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 1, false);
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yatube_user
+--
+
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 11, true);
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yatube_user
+--
+
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 33, true);
+
+
+--
+-- Name: posts_comment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yatube_user
+--
+
+SELECT pg_catalog.setval('public.posts_comment_id_seq', 1, false);
+
+
+--
+-- Name: posts_follow_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yatube_user
+--
+
+SELECT pg_catalog.setval('public.posts_follow_id_seq', 1, false);
+
+
+--
+-- Name: posts_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yatube_user
+--
+
+SELECT pg_catalog.setval('public.posts_group_id_seq', 1, false);
+
+
+--
+-- Name: posts_post_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yatube_user
+--
+
+SELECT pg_catalog.setval('public.posts_post_id_seq', 1, false);
+
+
+--
+-- Name: auth_group auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_group_id_permission_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_0cd325b0_uniq UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission auth_permission_content_type_id_codename_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_01ab375a_uniq UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups auth_user_groups_user_id_group_id_94350c0c_uniq; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_group_id_94350c0c_uniq UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_user_id_permission_id_14a6b632_uniq; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_permission_id_14a6b632_uniq UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: django_admin_log django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type django_content_type_app_label_model_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_app_label_model_76bd3d3b_uniq UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_migrations django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: posts_comment posts_comment_pkey; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.posts_comment
+    ADD CONSTRAINT posts_comment_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: posts_follow posts_follow_pkey; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.posts_follow
+    ADD CONSTRAINT posts_follow_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: posts_group posts_group_pkey; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.posts_group
+    ADD CONSTRAINT posts_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: posts_group posts_group_slug_838831b4_uniq; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.posts_group
+    ADD CONSTRAINT posts_group_slug_838831b4_uniq UNIQUE (slug);
+
+
+--
+-- Name: posts_post posts_post_pkey; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.posts_post
+    ADD CONSTRAINT posts_post_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: thumbnail_kvstore thumbnail_kvstore_pkey; Type: CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.thumbnail_kvstore
+    ADD CONSTRAINT thumbnail_kvstore_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX auth_group_name_a6ea08ec_like ON public.auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_group_id_b120cbf9; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX auth_group_permissions_group_id_b120cbf9 ON public.auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_permission_id_84c5c92e; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX auth_group_permissions_permission_id_84c5c92e ON public.auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_content_type_id_2f476e4b; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX auth_permission_content_type_id_2f476e4b ON public.auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_group_id_97559544; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX auth_user_groups_group_id_97559544 ON public.auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_user_id_6a12ed8b; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX auth_user_groups_user_id_6a12ed8b ON public.auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_permission_id_1fbb5f2c; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX auth_user_user_permissions_permission_id_1fbb5f2c ON public.auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_a95ead1b; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX auth_user_user_permissions_user_id_a95ead1b ON public.auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: auth_user_username_6821ab7c_like; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX auth_user_username_6821ab7c_like ON public.auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: django_admin_log_content_type_id_c4bce8eb; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX django_admin_log_content_type_id_c4bce8eb ON public.django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_user_id_c564eba6; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX django_admin_log_user_id_c564eba6 ON public.django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_expire_date_a5c62663; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX django_session_expire_date_a5c62663 ON public.django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX django_session_session_key_c0390e0f_like ON public.django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: posts_comment_author_id_795e4d12; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX posts_comment_author_id_795e4d12 ON public.posts_comment USING btree (author_id);
+
+
+--
+-- Name: posts_comment_post_id_e81436d7; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX posts_comment_post_id_e81436d7 ON public.posts_comment USING btree (post_id);
+
+
+--
+-- Name: posts_comment_pub_date_90133a5e; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX posts_comment_pub_date_90133a5e ON public.posts_comment USING btree (pub_date);
+
+
+--
+-- Name: posts_follow_author_id_07282e68; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX posts_follow_author_id_07282e68 ON public.posts_follow USING btree (author_id);
+
+
+--
+-- Name: posts_follow_user_id_0b8e2703; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX posts_follow_user_id_0b8e2703 ON public.posts_follow USING btree (user_id);
+
+
+--
+-- Name: posts_group_slug_838831b4_like; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX posts_group_slug_838831b4_like ON public.posts_group USING btree (slug varchar_pattern_ops);
+
+
+--
+-- Name: posts_post_author_id_fe5487bf; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX posts_post_author_id_fe5487bf ON public.posts_post USING btree (author_id);
+
+
+--
+-- Name: posts_post_group_id_c91a8485; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX posts_post_group_id_c91a8485 ON public.posts_post USING btree (group_id);
+
+
+--
+-- Name: posts_post_pub_date_131c7f8d; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX posts_post_pub_date_131c7f8d ON public.posts_post USING btree (pub_date);
+
+
+--
+-- Name: thumbnail_kvstore_key_3f850178_like; Type: INDEX; Schema: public; Owner: yatube_user
+--
+
+CREATE INDEX thumbnail_kvstore_key_3f850178_like ON public.thumbnail_kvstore USING btree (key varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissio_permission_id_84c5c92e_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissio_permission_id_84c5c92e_fk_auth_perm FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_permission auth_permission_content_type_id_2f476e4b_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_2f476e4b_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups auth_user_groups_group_id_97559544_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_97559544_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups auth_user_groups_user_id_6a12ed8b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_6a12ed8b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log django_admin_log_content_type_id_c4bce8eb_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_content_type_id_c4bce8eb_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log django_admin_log_user_id_c564eba6_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: posts_comment posts_comment_author_id_795e4d12_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.posts_comment
+    ADD CONSTRAINT posts_comment_author_id_795e4d12_fk_auth_user_id FOREIGN KEY (author_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: posts_comment posts_comment_post_id_e81436d7_fk_posts_post_id; Type: FK CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.posts_comment
+    ADD CONSTRAINT posts_comment_post_id_e81436d7_fk_posts_post_id FOREIGN KEY (post_id) REFERENCES public.posts_post(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: posts_follow posts_follow_author_id_07282e68_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.posts_follow
+    ADD CONSTRAINT posts_follow_author_id_07282e68_fk_auth_user_id FOREIGN KEY (author_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: posts_follow posts_follow_user_id_0b8e2703_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.posts_follow
+    ADD CONSTRAINT posts_follow_user_id_0b8e2703_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: posts_post posts_post_author_id_fe5487bf_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.posts_post
+    ADD CONSTRAINT posts_post_author_id_fe5487bf_fk_auth_user_id FOREIGN KEY (author_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: posts_post posts_post_group_id_c91a8485_fk_posts_group_id; Type: FK CONSTRAINT; Schema: public; Owner: yatube_user
+--
+
+ALTER TABLE ONLY public.posts_post
+    ADD CONSTRAINT posts_post_group_id_c91a8485_fk_posts_group_id FOREIGN KEY (group_id) REFERENCES public.posts_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
